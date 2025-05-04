@@ -57,7 +57,7 @@ export function IconSyncPage() {
 				value={status}
 				caseBy={{
 					idle: (
-						<Card className="p-4 gap-4 w-full h-full justify-between">
+						<Card className="p-4 gap-4 justify-between">
 							<IconList icons={state.icons} />
 							<CardFooter className="flex justify-between gap-4">
 								<Button
@@ -119,9 +119,9 @@ export function IconSyncPage() {
 
 function IconList({ icons }: { icons: Icon[] }) {
 	return (
-		<div className="grid grid-cols-4 gap-4">
+		<div className="grid grid-cols-8 gap-4">
 			{icons.map((icon) => (
-				<Card key={icon.id} className="flex flex-col items-center">
+				<Card key={icon.id} className="flex flex-col items-center justify-center">
 					<img src={`data:image/svg+xml;base64,${btoa(icon.data)}`} alt={icon.name} />
 				</Card>
 			))}
