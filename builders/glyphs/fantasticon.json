@@ -1,0 +1,19 @@
+{
+	"pathOptions": {
+		"html": "./output/index.html"
+	},
+	"inputDir": "icons",
+	"outputDir": "output",
+	"fontTypes": ["ttf"],
+	"assetTypes": ["ts", "css", "json", "html", "scss"],
+	"name": "icon-sync-glyphs",
+	"normalize": true,
+	"formatOptions": {
+		"json": {
+			"indent": 2
+		},
+		"ts": {
+			"singleQuotes": true
+		}
+	}
+}
