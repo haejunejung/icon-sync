@@ -32,6 +32,7 @@ export function IconSyncPage() {
 						compareBranch: state.compareBranch,
 						blobs,
 						commitMessage: "feat(icons): Update icons from figma",
+						storePath: state.storePath,
 					}),
 			},
 			{
@@ -46,7 +47,7 @@ export function IconSyncPage() {
 					}),
 			},
 		];
-	}, [gitRepository, state.compareBranch, state.mainBranch, blobs]);
+	}, [gitRepository, blobs, state.compareBranch, state.mainBranch, state.storePath]);
 
 	const { status, currentStep, lastResult, reset, run } = useAsyncTasks(tasks);
 

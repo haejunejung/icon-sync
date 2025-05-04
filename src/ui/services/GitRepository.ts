@@ -25,10 +25,12 @@ export class GitRepository {
 		compareBranch,
 		blobs,
 		commitMessage = "feat(icons): Update icons from figma",
+		storePath,
 	}: {
 		compareBranch: string;
 		blobs: { path: string; content: string }[];
 		commitMessage: string;
+		storePath: string;
 	}) {
 		const baseRef = await this.git.getRef(compareBranch);
 		if (!baseRef) {
@@ -48,6 +50,7 @@ export class GitRepository {
 		const treeEntries = await this.buildTreeEntries({
 			branch: compareBranch,
 			blobs,
+			storePath,
 		});
 
 		const newTree = await this.git.createTree(baseCommitSha, treeEntries);
@@ -97,9 +100,11 @@ export class GitRepository {
 	private async getDiff({
 		branch,
 		blobs,
+		storePath,
 	}: {
 		branch: string;
 		blobs: { path: string; content: string }[];
+		storePath: string;
 	}): Promise<string[]> {
 		const ref = await this.git.getRef(branch);
 		if (!ref) return [];
@@ -107,24 +112,34 @@ export class GitRepository {
 		const commit = await this.git.getCommit(ref.object.sha);
 		if (!commit) return [];
 
-		const tree = await this.git.getTree(commit?.tree.sha);
+		const tree = await this.git.getTree(commit.tree.sha, "true");
 		if (!tree) return [];
 
 		const previousPaths = new Set(
-			tree.tree.map((b) => b.path).filter((path) => typeof path !== "undefined"),
+			tree.tree
+				.map((b) => b.path)
+				.filter(
+					(path): path is string => typeof path === "string" && path.startsWith(`${storePath}/`),
+				),
 		);
-		const currentPaths = new Set(blobs.map((b) => b.path));
+
+		const currentPaths = new Set(
+			blobs.map((b) => b.path).filter((path) => path.startsWith(`${storePath}/`)),
+		);
+
 		return [...previousPaths].filter((path) => !currentPaths.has(path));
 	}
 
 	private async buildTreeEntries({
 		branch,
 		blobs,
+		storePath,
 	}: {
 		branch: string;
 		blobs: { path: string; content: string }[];
+		storePath: string;
 	}): Promise<{ path: string; mode: "100644"; type: "blob"; sha: string | null }[]> {
-		const diff = await this.getDiff({ branch, blobs });
+		const diff = await this.getDiff({ branch, blobs, storePath });
 		const deletedBlobs = diff.map((path) => ({ path }));
 		const deletedPaths = new Set(deletedBlobs.map((b) => b.path));
 
