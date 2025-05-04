@@ -14,5 +14,3 @@ jobs:
     uses: ./.github/workflows/icon-sync-glyphs.yml
     with:
       config-directory: builders/glyphs
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
