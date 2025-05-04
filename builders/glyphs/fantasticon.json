@@ -1,9 +1,9 @@
 {
 	"pathOptions": {
-		"html": "./dist/index.html"
+		"html": "./output/index.html"
 	},
 	"inputDir": "icons",
-	"outputDir": "dist",
+	"outputDir": "output",
 	"fontTypes": ["ttf"],
 	"assetTypes": ["ts", "css", "json", "html", "scss"],
 	"name": "icon-sync-glyphs",
