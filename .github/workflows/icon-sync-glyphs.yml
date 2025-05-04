@@ -1,0 +1,46 @@
+name: Reusable Icon Sync Glyphs Builder
+
+on:
+  workflow_call:
+    inputs:
+      config-directory:
+        required: false
+        type: string
+        default: .
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout caller repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build icon font with Fantasticon
+        working-directory: ${{ inputs.config-directory }}
+        run: |
+          npx fantasticon --config fantasticon.json
+
+      - name: Commit and push changes
+        working-directory: ${{ inputs.config-directory }}
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "feat(icon-sync-glyphs): update icon font"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ github.head_ref }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
