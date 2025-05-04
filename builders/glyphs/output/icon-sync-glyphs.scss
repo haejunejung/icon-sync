@@ -1,0 +1,33 @@
+$icon-sync-glyphs-font: "icon-sync-glyphs";
+
+@font-face {
+    font-family: $icon-sync-glyphs-font;
+    src: url("./icon-sync-glyphs.ttf?8534fc4c24f427a6875671ef0e90e29c") format("truetype");
+}
+
+i[class^="icon-"]:before, i[class*=" icon-"]:before {
+    font-family: icon-sync-glyphs !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$icon-sync-glyphs-map: (
+    "ico-home-thin-lg": "\f101",
+    "ico-home-line-lg": "\f102",
+    "ico-home-fill-lg": "\f103",
+);
+
+.icon-ico-home-thin-lg:before {
+    content: map-get($icon-sync-glyphs-map, "ico-home-thin-lg");
+}
+.icon-ico-home-line-lg:before {
+    content: map-get($icon-sync-glyphs-map, "ico-home-line-lg");
+}
+.icon-ico-home-fill-lg:before {
+    content: map-get($icon-sync-glyphs-map, "ico-home-fill-lg");
+}
