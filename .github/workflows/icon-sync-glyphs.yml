@@ -19,7 +19,7 @@ jobs:
       - name: Checkout caller repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0 
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -31,11 +31,12 @@ jobs:
         run: |
           npx fantasticon --config fantasticon.json
 
-      - name: Commit and push changes
+      - name: Commit changes after rebasing
         working-directory: ${{ inputs.config-directory }}
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin "${{ github.head_ref }}"
           git add -A
           git diff --cached --quiet || git commit -m "feat(icon-sync-glyphs): update icon font"
 
